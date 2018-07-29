@@ -1,0 +1,899 @@
+% Modelo para monografia de final de curso, em conformidade
+% com normas da ABNT implementadas pelo projeto abntex2.
+%
+% Este arquivo é fortemente baseado em exemplo distribuído no
+% mesmo projeto. O projeto abntex2 pode ser acessado pela página
+% http://abntex2.googlecode.com/
+%
+% Este arquivo pode ser rodado tanto com o pdflatex quanto com
+% o lualatex.  Como contém referências bibliográficas a serem
+% processadas pelo programa bibtex, este programa deve ser
+% executado. Em resumo, a ordem de execução deve ser:
+% rodar primeiro o pdflatex (ou o lualatex), depois o bibtex e,
+% a seguir, o pdflatex (ou o lualatex ) novamente mais duas vezes,
+% para assegurar que todas as referências bibliográficas e 
+% citações estejam atualizadas.
+%
+% Para adaptar os textos para uso pessoal, usar os comandos
+% imediatamente antes do \begin{document} (iniciando com o
+% comando \titulo).  
+%
+% Este modelo está adaptado para monografias de final de curso
+% em matemática da UFRJ, mas, com o uso das variáveis, pode ser
+% usado para outros tipos de trabalho (mestrado, doutorado),
+% outros cursos, universidades etc.  Caso a adaptação das
+% variáveis não seja suficiente, pode-se alterar os comandos
+% imprimircapa, imprimirfolhaderosto e imprimiraprovação, 
+% fazendo as alterações necessárias.  Como os comandos definidos
+% neste texto usam somente LaTeX, a sua adaptação deve ser 
+% simples, bastando algum conhecimento de LaTeX.
+%
+% O restante do preâmbulo provavelmente  não necessitará ser
+% alterado, a menos, eventualmente, das opções de chamada da
+% classe abntex2, que estão definidas a seguir.
+% 
+\documentclass[ 
+% -- opções da classe memoir que é a classe base da abntex2 --
+% tamanho da fonte
+12pt,
+% capítulos começam em pág ímpar. Insere pág vazia, se preciso
+openright,
+% para imprimir uma página por folha ou visualização em video 
+oneside,
+% frente e verso. Margens das pag. ímpares diferem das pares.
+%  twoside,
+% tamanho do papel. 
+a4paper,
+% Caio - Ocultando bordas horríveis em hiperligações
+hidelinks,
+% -- opções da classe abntex2 --
+% títulos de capítulos convertidos em letras maiúsculas
+%  chapter=TITLE,
+% títulos de seções convertidos em letras maiúsculas
+%  section=TITLE,
+% títulos de subseções convertidos em letras maiúsculas
+%  subsection=TITLE,
+% títulos de subsubseções convertidos em letras maiúsculas
+%  subsubsection=TITLE,
+% -- opções do pacote babel --
+english,   % idioma adicional para hifenização
+portuguese,   % o último idioma é o principal do documento
+oldfontcommands,
+]{abntex2}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+% cabeçalho comum para uso com lualatex ou pdflatex
+\usepackage{ifluatex}
+% opções para uso com o lualatex
+\ifluatex
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+% o fonte small caps é diferente no latin modern
+\fontspec[SmallCapsFont={Latin Modern Roman Caps}]{Latin Modern Roman}
+% pacotes da AMS 
+\usepackage{amsmath,amsthm} 
+% pacote para fonte específico para símbolos matemáticos
+\usepackage{unicode-math}
+\setmathfont{Latin Modern Math}
+% latin modern tem simbolos de mathbb muito feios.
+%  Trocar o fonte para estes simbolos.
+\setmathfont[range=\mathbb]{Tex Gyre Pagella Math}
+% opções para uso com o pdflatex
+\else
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{etoolbox}
+% pacotes da AMS 
+\usepackage{amsmath,amssymb,amsthm} 
+% Mapear caracteres especiais no PDF
+\usepackage{cmap}
+\fi
+
+% pacotes usados tanto pelo lualatex quanto pelo pdflatex
+\usepackage{lastpage}    % Usado pela Ficha catalográfica
+\usepackage{indentfirst} % Indenta primeiro parágrafo 
+\usepackage{color}       % Controle das cores
+\usepackage{graphicx}    % Inclusão de gráficos
+\usepackage{wrapfig}    % gráficos ao redor do texto
+% pacote para ajustar os fontes em cada linha de forma a
+% respeitar as margens
+\usepackage{microtype}
+% permite a gravação de texto em um arquivo indicado a partir
+% deste arquivo.  Está sendo usado para criar o arquivo .bib
+% com conteúdo definido neste arquivo, evitando a edição 
+% de um arquivo .bib somente para a bibliografia
+\usepackage{filecontents}
+
+% Caio - preciso de tabelas longas
+\usepackage{longtable}
+
+% Caio - adicionando o pacote hyperref
+\usepackage{hyperref}
+
+\hypersetup{
+	%pagebackref=true,
+	pdftitle={Resumo da obra "Aspects of Development and Underdevelopment"}, 
+	pdfauthor={Caio César Carvalho Ortega},
+	pdfsubject={Desenvolvimento Econômico, Pós-keynesianismo, Economia}, 
+	colorlinks=false,      		% false: boxed links; true: colored links
+	linkcolor=blue,          	% color of internal links
+	citecolor=blue,        		% color of links to bibliography
+	filecolor=magenta,      	% color of file links
+	urlcolor=blue,
+	bookmarksdepth=4
+}
+
+% Caio - separação silábica
+%\hyphenation{}
+
+% Caio - citações mais poderosas
+%\usepackage[autostyle]{csquotes}
+
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+% Caio - habilitar glossário
+\usepackage{glossaries}
+%\makeglossaries
+
+% \newglossaryentry{ex}{name={sample},description={an example}}
+%\newglossaryentry{abl}{
+%	name={ABL},
+%	description={Área Bruta Locável}
+%}
+
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+% Comandos para definir ambientes tipo teorema em português 
+\newtheorem{meuteorema}{Teorema}[chapter]
+\newtheorem{meuaxioma}{Axioma}[chapter]
+\newtheorem{meucorolario}{Corolário}[chapter]
+\newtheorem{meulema}{Lema}[chapter]
+\newtheorem{minhaproposicao}{Proposição}[chapter]
+\newtheorem{minhadefinicao}{Definição}[chapter]
+\newtheorem{meuexemplo}{Exemplo}[chapter]
+\newtheorem{minhaobservacao}{Observação}[chapter]
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+% Pacotes de citações
+\usepackage[brazilian,hyperpageref]{backref}
+\usepackage[alf]{abntex2cite}   % Citações padrão ABNT
+%\usepackage[num]{abntex2cite}  % Citações numéricas
+% --- 
+% Configurações do pacote backref
+% Usado sem a opção hyperpageref de backref
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+% Texto padrão antes do número das páginas
+\renewcommand{\backref}{}
+% Define os textos da citação
+\renewcommand*{\backrefalt}[4]{
+	\ifcase #1 %
+	Nenhuma citação no texto.%
+	\or
+	Citado na página #2.%
+	\else
+	Citado #1 vezes nas páginas #2.%
+	\fi}%
+% --- 
+% --- 
+% Espaço em branco no início do parágrafo
+\setlength{\parindent}{1.3cm}
+% Controle do espaçamento entre um parágrafo e outro:
+\setlength{\parskip}{0.2cm}  % tente também \onelineskip
+% ---
+% compila o indice, se este for incluído no texto
+\makeindex
+%
+% --------------------------------------------------------- 
+% ---------------------------------------------------------
+% Redefinindo o comando do abntex2 para gerar uma capa 
+\renewcommand{\imprimircapa}{%
+	%   \begin{capa}
+	\begin{flushleft} 
+		{\Large \textsc{\imprimirinstituicao  \\
+				\imprimircurso \\} }
+	\end{flushleft}
+	
+	\vfill
+	\begin{center}
+		{\large \imprimirautor} \\
+		{\Large \textit{\imprimirtitulo}}
+	\end{center}
+	
+	\vfill
+	\begin{center}
+		{\large{\imprimirlocal \\ \imprimirano  }}
+	\end{center}
+	\vspace*{1cm} 
+	%   \end{capa}
+	
+}
+% ---------------------------------------------------------
+% ---------------------------------------------------------
+%
+%
+% ---------------------------------------------------------
+% ---------------------------------------------------------
+% Redefinindo o comando para gerar uma folha de rosto 
+\renewcommand{\imprimirfolhaderosto}{%
+	\begin{center}
+		{\large \imprimirautor}
+	\end{center}
+	\vfill \vfill \vfill \vfill
+	\begin{center}
+		{\Large \textit{\imprimirtitulo}}
+	\end{center}
+	
+	\vfill \vfill \vfill 
+	\begin{flushright} 
+		\parbox{0.5\linewidth}{
+			\imprimirtipotrabalho\, relacionado ao 
+			\imprimircurso\, da \imprimirsigla\, 
+			entregue como parte do
+			processo de graduação para a obtenção do 
+			grau de \imprimirgrau.}
+	\end{flushright} 
+	
+	\vfill 
+	\begin{flushright} 
+		\parbox{0.5\linewidth}{ \imprimirorientadorRotulo 
+			\imprimirorientador\\ \imprimirttorientador}
+	\end{flushright} 
+	
+	\ifdefvoid{\imprimircoorientador}{}{
+		\begin{flushright} 
+			\parbox{0.5\linewidth}{ \imprimircoorientadorRotulo 
+				\imprimircoorientador\\ \imprimirttcoorientador}
+		\end{flushright}
+	}
+	
+	\vfill \vfill \vfill \vfill \vfill \vfill \vfill
+	\begin{center}
+		{\large{\imprimirlocal \\ \imprimirano}}
+	\end{center}
+	\vspace*{1cm} \newpage
+}
+% Final do comando para gerar uma folha de rosto 
+% ---------------------------------------------------------
+% ---------------------------------------------------------
+%
+%
+% ---------------------------------------------------------
+% ---------------------------------------------------------
+% Definindo o comando para gerar uma folha de defesa 
+\newcommand{\imprimirfolhadeaprovacao}{%
+	\begin{center}
+		{\large \imprimirautor}
+	\end{center}
+	\vfill \vfill \vfill \vfill
+	\begin{center}
+		{\Large \textit{\imprimirtitulo}}
+	\end{center}
+	
+	\vfill \vfill \vfill \vfill \vfill \vfill
+	\begin{flushright} 
+		\parbox{0.5\linewidth}{
+%			\imprimirtipotrabalho\,apresentada ao 
+%			\imprimircurso\, da \imprimirsigla\, como requisito
+%			para a obtenção parcial do grau de \imprimirgrau.}
+		}
+	\end{flushright} 
+	\vfill \vfill \vfill \vfill
+	Aprovada em \data.
+	
+	\vfill \vfill \vfill \vfill
+	
+	\begin{center}
+		\textbf{BANCA EXAMINADORA}
+		
+		\vfill\vfill\vfill
+		\rule{10cm}{.1pt}\\
+		{\imprimirexaminadorum} \\ {\imprimirttexaminadorum}
+		
+		\ifdefvoid{\imprimirexaminadordois}{}{
+			\vfill\vfill
+			\rule{10cm}{.1pt}\\
+			\imprimirexaminadordois \\ \imprimirttexaminadordois }
+		
+		\ifdefvoid{\imprimirexaminadortres}{}{
+			\vfill\vfill
+			\rule{10cm}{.1pt}\\
+			\imprimirexaminadortres \\ \imprimirttexaminadortres }
+		
+		\ifdefvoid{\imprimirexaminadorquatro}{}{
+			\vfill\vfill
+			\rule{10cm}{.1pt}\\
+			\imprimirexaminadorquatro \\ \imprimirttexaminadorquatro }
+	\end{center}
+	
+	\vfill \vfill 
+	\begin{center}
+		{\large{\imprimirlocal \\ \imprimirano}}
+	\end{center}
+	\vspace*{1cm} \newpage
+}
+% Final do comando para gerar uma folha de defesa 
+% ---------------------------------------------------------
+% --------------------------------------------------------
+%
+%
+%
+%
+%
+% ---------------------------------------------------------
+% --------------------------------------------------------
+% definindo variáveis adicionais 
+\providecommand{\imprimirsigla}{}
+\newcommand{\sigla}[1]{\renewcommand{\imprimirsigla}{#1}}
+%
+\providecommand{\imprimircurso}{}
+\newcommand{\curso}[1]{\renewcommand{\imprimircurso}{#1}}
+%
+\providecommand{\imprimirano}{}
+\newcommand{\ano}[1]{\renewcommand{\imprimirano}{#1}}
+%
+\providecommand{\imprimirgrau}{}
+\newcommand{\grau}[1]{\renewcommand{\imprimirgrau}{#1}}
+%
+\providecommand{\imprimirexaminadorum}{}
+\newcommand{\examinadorum}[1]{
+	\renewcommand{\imprimirexaminadorum}{#1}}
+%
+\providecommand{\imprimirexaminadordois}{}
+\newcommand{\examinadordois}[1]{
+	\renewcommand{\imprimirexaminadordois}{#1}}
+%
+\providecommand{\imprimirexaminadortres}{}
+\newcommand{\examinadortres}[1]{
+	\renewcommand{\imprimirexaminadortres}{#1}}
+%
+\providecommand{\imprimirexaminadorquatro}{}
+\newcommand{\examinadorquatro}[1]{
+	\renewcommand{\imprimirexaminadorquatro}{#1}}
+%
+\providecommand{\imprimirttorientador}{}
+\newcommand{\ttorientador}[1]{
+	\renewcommand{\imprimirttorientador}{#1}} 
+%
+\providecommand{\imprimirttcoorientador}{}
+\newcommand{\ttcoorientador}[1]{
+	\renewcommand{\imprimirttcoorientador}{#1}}
+%
+\providecommand{\imprimirttexaminadorum}{}
+\newcommand{\ttexaminadorum}[1]{
+	\renewcommand{\imprimirttexaminadorum}{#1}}
+%
+\providecommand{\imprimirttexaminadordois}{}
+\newcommand{\ttexaminadordois}[1]{\renewcommand{
+		\imprimirttexaminadordois}{#1}}
+%
+\providecommand{\imprimirttexaminadortres}{}
+\newcommand{\ttexaminadortres}[1]{
+	\renewcommand{\imprimirttexaminadortres}{#1}}
+%
+\providecommand{\imprimirttexaminadorquatro}{}
+\newcommand{\ttexaminadorquatro}[1]{
+	\renewcommand{\imprimirttexaminadorquatro}{#1}}
+% fim da definição de variáveis adicionais
+% ---------------------------------------------------------
+% ---------------------------------------------------------
+%
+% ---
+% ---
+% ---
+% ---
+% ---
+% ---
+% ---
+% ---
+% ---
+% Informações de dados para CAPA, FOLHA DE ROSTO e FOLHA DE DEFESA
+%
+%----------------- Título e Dados do Autor -----------------
+\titulo{}
+\autor{} 
+%
+
+%----------Informações sobre a Instituição e curso -----------------
+\instituicao{ \\
+	}
+%
+\sigla{UFABC}
+%
+\curso{Bacharelado em Ciências e Humanidades}
+%\curso{Curso de Licenciatura em Matemática}
+%\curso{Mestrado em Ensino de Matemática}
+%\curso{Doutorado em Matemática}
+%
+\local{}
+%
+%
+% -------- Informações sobre o tipo de documento
+\tipotrabalho{}
+%\tipotrabalho{Monografia de final de curso}
+%\tipotrabalho{Dissertação de mestrado}
+%\tipotrabalho{Tese de doutorado}
+%
+\grau{BACHAREL em Ciências Matemáticas e da Terra}
+%\grau{LICENCIADO em Matemática}
+%\grau{MESTRE em Matemática}
+%\grau{DOUTOR em Ciências}
+%
+\ano{}
+\data{} % data da aprovação
+%
+%------Nomes do Orientador, examinadores.  
+\orientador{}
+%\coorientador{Antonio da Silva} % opcional
+\examinadorum{}
+%\examinadordois{Ivo Fernandez Lopez}
+%\examinadortres{Jeferson Leandro Garcia de Araújo}
+%\examinadorquatro{Antonio da Silva}
+%
+%--------- Títulos do Orientador e examinadores ----
+%\ttorientador{Bacharel em Física - UEFS}
+%\ttcoorientador{Doutor em Matemática - UFRJ} 
+%\ttexaminadorum{Doutor em Matemática - UFRJ}
+%\ttexaminadordois{Doutor em Matemática - UFRJ}
+%\ttexaminadortres{Doutor em Matemática - UFRJ}
+%\ttexaminadorquatro{Doutor em Matemática - UFRJ}
+%
+% ---
+% ---
+\begin{document}
+	% ---
+	% Chamando o comando para imprimir a capa
+	%\imprimircapa
+	% ---
+	% ---
+	% Chamando o comando para imprimir a folha de rosto
+	%\imprimirfolhaderosto
+	% ---
+	% ---
+	% Chamando o comando para imprimir a folha de aprovação
+	%\imprimirfolhadeaprovacao
+	% ---
+	% ---
+	% Dedicatória
+	% ---
+%	\begin{dedicatoria}
+%	   \vspace*{\fill}
+%	   \centering
+%	   \noindent
+%	   \textit{} \vspace*{\fill}
+%	\end{dedicatoria}
+%	
+%	
+%	\begin{agradecimentos}
+%	\end{agradecimentos}
+	
+	
+	%
+	%---------------------- EPÍGRAFE I (OPCIONAL)--------------
+	%\begin{epigrafe}
+	%    \vspace*{\fill}
+	%    \begin{flushright}
+	%        \textit{''Texto''\\
+	%        Autor}
+	%    \end{flushright}
+	%\end{epigrafe}
+	%
+	%
+	%
+	%--------Digite aqui o seu resumo em %Português--------------
+	%\begin{resumo}
+	%   Descrição. 
+	%
+	%   \vspace{\onelineskip}
+	%   \noindent
+	%   \textbf{Palavras-chaves}: Palavras.
+	%\end{resumo}
+	
+	
+	%
+	% --- resumo em inglês (abstract) ---
+	%\begin{resumo}[Abstract]
+	%   \begin{otherlanguage*}{english}
+	%      Description.
+	%
+	%      \vspace{\onelineskip}
+	%      \noindent
+	%      \textbf{Keywords}: Words.
+	%   \end{otherlanguage*}
+	%\end{resumo}
+	
+	
+	%
+	%----Sumário, lista de figura e de tabela ------------
+	%\tableofcontents 
+	%\listoffigures
+	%\listoftables
+	%---------------------
+	%--------------Início do Conteúdo---------------------------
+	% o comando textual é obrigatório e marca o ponto onde começa 
+	% a imprimir o número da página
+	\textual
+	%
+	%---------------------
+	%
+	
+	% Estrutura da resenha
+	%
+	% • Resumo (3 páginas)
+	% • Comentário (3-4 páginas)
+	% • Bibliografia (até 10 páginas)
+	%
+	% Resenha = peso 3; prova = peso 7
+	
+	\chapter{Introdução}
+	
+	% Exemplos de citações:
+	%
+	% \apud[pág. 43]{Nilma}{Munanga2004}
+	%
+	% \cite[pág. 43]{Nilma}
+	%
+	% \citeonline{Nilma}
+	%
+	% \begin{citacao}
+	%	A exposição do acervo do Museu Afro Brasil pretende...”
+	%	\cite{SiteExpo}
+	% \end{citacao}
+	
+	O propósito do livro de Joan \citeonline{Robinson1979} é discutir os efeitos do desenvolvimento, criticando em tom pessimista, as promessas e posições baseadas na doutrina neoclássica a partir dos díspares resultados obtidos, sobretudo nos países do Terceiro Mundo. A teoria econômica adotada é pós-keynesiana, reinterpretando visões neoclássicas e marxianas\footnote{A autora utiliza o termo ``marxiana'' em detrimento de ``marxista'', desta forma, optei por manter o termo em respeito à obra original.}, com direito a um apêndice no segundo capítulo para esclarecer o uso da terminologia marxiana. O livro inclui uma espécie de introdução, desenvolvendo em seguida capítulos para assuntos-chave do desenvolvimento, como o uso da terra, industrialização e acumulação, concluindo com um capítulo contendo uma série de pequenas recomendações que se apoiam na reinterpretação pós-keynesiana e na crítica, muitas vezes ferrenha já no primeiro parágrafo de cada capítulo, da ortodoxia econômica.
+	
+	\chapter{Resumo}
+	
+	A obra está estruturada em um arranjo que consiste de um prefácio acompanhado de oito capítulos, que visam, um a um, contra-argumentar diferentes aspectos da doutrina neoclássica no tocante ao desenvolvimento. Ainda no primeiro capítulo, intitulado \textit{Misleading lights} (Luzes enganosas, em tradução livre), Robinson deixa claro que o tom pessimista que admitira utilizar marcará a leitura desde o princípio.
+	
+	Enquanto o primeiro capítulo pode ser pensado como uma espécie de introdução, os capítulos seguintes, do segundo ao sétimo, se debruçam sobre temas específicos.
+	
+	O primeiro passo adotado por Robinson é o questionamento da matriz educacional ocidental, segundo ela, existe uma presunção para que o ensino ocidental seja científico, o que resulta em (i) separação do aspecto econômico da vida humana desde sua configuração política e; (ii) distorção do problema a ser discutido, isto é:
+	
+	\begin{citacao}
+		A leading example of this tendency in the discussion of so-called development is the habit of concentrating upon the concept of Gross National Product, that is a measure of flow of output, in a particular country, of physical exchangable goods and services, summed up at market prices, and theating its growth as the object of policy and the criterion of sucess.
+		\cite[pág. 3]{Robinson1979}
+	\end{citacao}
+	
+	O segundo passo é questionar o sentido e os critérios no cálculo do Produto Nacional Bruto (PNB), para \citeonline[pág. 3]{Robinson1979}, o cálculo é falho, devido a:
+	\begin{itemize}
+		\item Dificuldades estatísticas;
+		\item Quebra-cabeças filosóficos;
+		\item Ausência de informação em muitos setores do Terceiro Mundo;
+		\item Comparações baseadas em estimativas imaginativas.
+	\end{itemize}
+	
+	Assim, \citeonline[pág. 3]{Robinson1979} questiona qual é o sentido de calcular a magnitude de um fluxo de saída física ignorando suas condições de produção ou a sua distribuição entre as pessoas envolvidas, argumentando que o problema na distribuição da renda nacional e a riqueza entre famílias vai exigir um aprofundamento na confusão moral causada pelas doutrinas modernas do Ocidente, apontando que o conceito é equivocado como um todo.
+	
+	O antagonismo fica evidente quando \citeonline[pág. 4]{Robinson1979} argumenta que o conceito de PNB como uma medida de bem-estar (\textit{welfare}, no original em inglês) é um importante elemento na doutrina econômica ortodoxa, afetando as visões de conselheiros seguidores desta, com pretensões de serem úteis para o que seriam os países em desenvolvimento\footnote{Aqui, a autora se distancia da expressão ``países de Terceiro Mundo'' e adota ``\textit{would-be developing countries}'' ao invés, ou seja, como o questionamento envolve o arcabouço ortodoxo e seus resultados no ambiente formado pelo chamado Terceiro Mundo, os países dele supostamente se encontram em desenvolvimento.}. Indo além, ao comentar sobre as corporações transnacionais, classifica a doutrina ortodoxa como possuidora de argumentos metafísicos. Neste contexto, a autora está em conformidade com Keynes:
+	
+	\begin{citacao}
+		Keynes observed that, since the future is uncertatin, strictly rational behaviour is impossible. The conventions that guide decisions are: ``pretty, polite techniques,made for a well-panelled board room and a nicely regulated market\dots I accuse the classical economic theory of being itself one of there pretty, polite techniques which tries to deal with the present by abstracting from the fact that we know very little about the future.
+		\apud[pág. 49]{Robinson1973}{Keynes1937}
+	\end{citacao}
+	
+	Ainda sobre o Produto Nacional Bruto, \citeonline[pág. 5]{Robinson1979} argumenta que a informação sobre a renda média não tem significado a menos que se saiba como o poder de consumo está distribuído\footnote{Contra-posição ao princípio de Bentham.}, ainda, \citeonline[pág. 6]{Robinson1979} aponta que um PNB \textit{per capita} imenso não adianta, pois ainda assim aquela sociedade pode se encontrar majoritariamente na pobreza; no caso, utiliza o exemplo do aumento súbito de demanda pelo petróleo no final de 1973 e a relação com o aumento da riqueza nacional de países árabes. Comenta que na maioria dos países há um setor atrelado ao comércio mundial e uma indústria que suporte uma comunidade urbana relativamente rica, causando êxodo de camponeses que migram do campo para a cidade na expectativa de viver melhor com ``as migalhas que caem da mesa do homem burguês'', cenário este que se exacerba com o crescimento populacional. Cabe aqui fazer um parênteses sobre o cálculo do Produto Nacional Bruto, que possui duas definições:
+	\begin{itemize}
+		\item Definição soviética: apenas a saída física, sendo razoável excluir a informalidade;
+		\item Definição ocidental: é medido a valores de mercado, incluindo serviços — nesta situação, a renda dos favelados\footnote{Nota da minha tradução: adotei ``favelados'' para o termo ``\textit{shanty dwellers}'', que traduzido literalmente ficaria como ``moradores de barracos''.} mede o valor dos serviços que eles desempenham.
+	\end{itemize}
+	
+	Na seção \textit{The modernization of poverty} (A modernização da pobreza, em tradução livre), \citeonline[pág. 6]{Robinson1979} é categórica ao apontar o excesso de força trabalhadora, baixo crescimento dos postos de trabalho na indústria e comércio, incapacidade de absorção na agricultura mesmo para quem tem pretensão de ser cultivador, o que resulta em favelização e padrão de vida subumano nas áreas urbanas, ademais, introduz o problema de suas atividades do ponto de vista da economia, pois não há consenso sobre a inclusão do trabalho informal que acaba sendo adotado pelos favelados, que se auto-empregam realizando comércio e serviços com a própria comunidade e bairros ao redor.
+	
+	Argumenta que atualmente há grande desilusão quanto a comparações da renda nacional per capita para demonstrar a diferença entre países ricos e pobres (PNB estatístico), ainda que porta-vozes dos países de Terceiro Mundo as façam, explica que o principal requisito agora é um ``ataque frontal na pobreza em massa e no desemprego, ainda que ninguém esteja pronto para abandonar as equivocadas teorias econômicas que levaram a ilusões'' \cite[pág. 6]{Robinson1979}.
+	
+	Basicamente, Joan Robinson inicia dizendo que a explosão populacional está correlacionada com o aprimoramento da medicina, impedindo a disseminação de pandemias, além de melhorias na higiene. O aumento da qualidade de vida é um ganho, mas o aumento populacional excessivo numa dada porção do território não é positivo, pois significa uma menor média familiar de recursos naturais (incluindo terras cultiveis), além de tornar difícil (a medida que há aumento na densidade) reduzir as carências (equipamentos, educação etc).
+	
+	\citeonline[pág. 7]{Robinson1979}, ao tratar da questão populacional, retoma o princípio de Bentham e, com relação a afirmação ``\textit{everyone counts for one}'', explica que há um problema social, pois o padrão de vida vai depender da riqueza média da população, porém, numa sociedade de classes, um crescimento dos números é vantajoso para os detentores de propriedades, proporcionando uma maior quantidade de indivíduos para ser explorada como inquilinos, escravos ou trabalhadores, além de mitigar a possibilidade de retirada destes para terras ociosas.
+	
+	Explica que Marx, ao se contrapor a Malthus, deixou de abordar a questão do crescimento populacional, a partir daí, quando a acumulação de capital cresce mais rapidamente do que a oferta de mão-de-obra, os salários sobem, consequentemente reduzindo a lucratividade da produção industrial e reduzindo a acumulação, em outras palavras, resume que ``\textit{when the labour force is not growing, accumulation takes the form of technical change witch raises output per man employed}'' \cite[pág. 8]{Robinson1979}.
+	
+	Vai além e diz marxistas dogmaticamente fanáticos se juntaram ao Papa na recusa de que o crescimento populacional, em condições modernas, é um impedimento para o crescimento do bem-estar humano. Interessante que ela utiliza a expressão ``exército reserva de desempregados''\footnote{Talvez uma tradução alternativa (e superior) seja ``contingente reserva''.} como um instrumento do capital em tentar regular sua margem de lucratividade a medida que a acumulação cresce. Comenta que no Terceiro Mundo, tais marxistas se juntam aos que nutrem um sentimento nacionalista de disputa numérica.
+	
+	\citeonline[pág. 14]{Robinson1979} não nega que existe influência de oferta e demanda, exemplificando com produtos agrícolas, mas afirma que \textbf{não há mecanismo que dê equilíbrio ao mercado}, pois para \citeonline[pág. 15]{Robinson1979} nas condições de um livre mercado, os termos de troca estão sempre mudando, não havendo uma explicação do que seria um padrão de equilíbrio para os preços relativos.
+	
+	\citeonline[pág. 17]{Robinson1979} aponta que há uma vantagem injusta sendo aproveitada pelos operários e capitalistas dos países desenvolvidos, o que causa uma espécie de desequilíbrio ligado à dependência da exportação de matéria prima para os países desenvolvidos.
+	
+	Quando \citeonline[pág. 24]{Robinson1979} trata da análise de Marx no capítulo 2, podemos resumi-la em dois conjuntos de pontos, sendo (i) num sentido geral:
+	
+	\begin{itemize}
+		\item Tema central foi mais persistente e profundamente assentado no conflito de classes entre quem detém propriedade e quem não detém e precisa vender sua força de trabalho;
+		\item Descrição da evolução do capitalismo é complexa, rica e detalhada, ilustrada por muita evidência factual (principalmente de fontes inglesas);
+		\item Modelo simplificado no núcleo do argumento, baseado numa sociedade com duas classes, com a saída de mercadorias medida pelo seu valor.
+	\end{itemize}
+	
+	E (ii) a respeito do conceito de valor:
+	\begin{itemize}
+		\item Está atrelado à natureza do capitalismo e é filosófico;
+		\item Carrega pesadas implicações ideológicas;
+		\item Soluciona a questão do problema da agregação enfrentado por Ricardo;
+		\item Valor continua sendo difícil de definir trabalho qualificado em relação ao trabalho regular.
+	\end{itemize}
+	
+	\citeonline[pág. 26]{Robinson1979} acredita que o modelo  de Marx é um \textit{framework} que pode ser adaptado para analisar os problemas dos países em desenvolvimento do Terceiro Mundo, o qual apresenta uma maior diversidade, porém, Marx negligenciou a questão demográfica. \citeonline[pág. 27]{Robinson1979} aponta também que o tratamento do capitalismo como um sistema de exploração por Keynes ofendeu neoclássicos, mas ao mesmo tempo mostrou que a exploração é o grande motor para acumulação e o que é chamado atualmente de crescimento econômico.
+	
+	Conforme \citeonline[pág. 32]{Robinson1979}, de acordo com a teoria econômica ortodoxa, a acumulação se dá devido à poupança e é necessária para tenha uma classe rica, pois apenas os ricos poupam. Poupar para agrega riqueza individualmente para uma família, mas a nação só pode adicionar riqueza ampliando sua capacidade produtiva via investimento. 
+	
+	Abaixo sintetizo os pontos apresentados por \citeonline[págs. 32-34]{Robinson1979} acerca da doutrina no capítulo 2, em ``\textit{Rentier consumption}'':
+	
+	\begin{itemize}
+		\item Antes da fase de desenvolvimento, já haviam classes ricas nos países subdesenvolvidos;
+			\begin{itemize}
+				\item Lucravam com aluguéis, lucros do comércio, início da indústria;
+				\item Os ricos gastavam em luxos indígenas e produtos ocidentais\footnote{Aqui os argumentos parecem centrados no Oriente.};
+			\end{itemize}
+		\item Nos últimos 20 anos, rendas nacionais estão crescendo no Terceiro Mundo;
+			\begin{itemize}
+				\item Suplementadas por empréstimos e garantias;
+			\end{itemize}
+		\item Desigualdade na distribuição de renda entre famílias está aumentando;
+		\item Aumento no fluxo de gastos com luxos ao estilo ocidental;
+		\item Desenvolvimento de nichos para consumo de novos bens;
+			\begin{itemize}
+				\item Carros;
+				\item Eletrodomésticos;
+			\end{itemize}
+		\item Empregados domésticos ainda são mantidos no Terceiro Mundo (enquanto apenas os super-ricos podem mantê-los nos países desenvolvidos);
+		\item Eletrodomésticos como máquinas de lavar e geladeiras passam a ser compradas por aqueles com maior renda;
+		\item No Terceiro Mundo, melhor trabalhar para um rentista do que não trabalhar;
+		\item Não há discussão na economia ortodoxa sobre qual forma de desenvolvimento é desejável do ponto de vista da sociedade;
+			\begin{itemize}
+				\item Doutrina usual é que o livre mercado força alocação dos recursos entre usos alternativos, mas o investimento está criando recursos adicionais àqueles já existentes;
+				\item Keynes, por outro lado, tinha interesse em investimento principalmente como um meio de manter a demanda efetiva e não se importava muito com o conteúdo;
+				\item Princípio de que o que é lucrativo é certo acaba se sobressaindo, o que limita o desenvolvimento conforme interesses de latifundiários, fazendeiros e detentores de maior poder político;
+				\item Medidas convencionais de PNB per capita são usadas para dividir o mundo entre países ricos e pobres sem observar a divisão interna entre ricos de pobres dos países;
+				\item Ignora a concentração de poder e consumo de luxo nos países pobres.
+			\end{itemize}
+	\end{itemize}
+	
+	\citeonline[pág. 85]{Robinson1979} Argumenta no capítulo 5 que (i) a noção de promoção do desenvolvimento via ``transferência de capital'' é falsa e baseada em experiências do século XIX e que; (ii) não existe mágica na importação de capital a menos que o mecanismo digestivo de quem vai recebê-lo seja capaz de usá-lo.
+	
+	Analisa também a ideia em torno da criação do Fundo Monetário Internacional (FMI), cujo papel resumo abaixo conforme \citeonline[pág. 94]{Robinson1979}:
+	
+	\begin{itemize}
+		\item Ideia central do FMI: proporcional liquidez internacional;
+			\begin{itemize}
+				\item Fundo para cobrir temporariamente dívidas no balanço de pagamentos enquanto as autoridades adotariam medidas para equilibrar;
+				\item FMI acabou se especializando em emprestar dinheiro ao Terceiro Mundo, supervisionando seu uso;
+				\item Muito diferente do propósito original;
+				\item Desenvolvimento sem consistência e sem planejamento;
+				\item Aderência à visão ortodoxa;
+					\begin{itemize}
+						\item Política monetária restrita;
+						\item Confiança da operação no livre mercado;
+						\item Crença de crescimento estável;
+					\end{itemize}
+				\item Países excessivamente endividados são vistos pelos banqueiros como mal administrados. São medidas essenciais que o FMI impõe:
+					\begin{itemize}
+							\item Restrição de crédito;
+							\item Redução dos déficits orçamentários;
+							\item Aumento das taxas de interesse;
+							\item Aumento do desemprego para talvez reduzir os preços;
+							\item Totalmente contrário a medidas que defendam os interesses de trabalhadores e camponeses, como controle de preços, subsídios ou taxas salariais;	\item Totalmente contrário a medidas protecionistas, favorecimento de exportação visa múltiplas taxas de câmbio. Caminho é a desvalorização da moeda.
+					\end{itemize}
+			\end{itemize}
+	\end{itemize}
+	
+	Ao discorrer sobre o FMI, a autora questiona: ``é dogmatismo puro ou há algum propósito?'', sendo uma resposta possível o fragmento a seguir, que sintetiza o papel do FMI e outras instituições, presente em obra posterior de Celso Furtado:
+	
+	\begin{citacao}
+		A superestrutura institucional então criada (Fundo Monetário Internacional, Banco Mundial, GATT) destinou-se a assegurar, mediante uma tutela indireta, que as políticas econômicas nacionais levassem na devida conta o objetivo maior da estabilidade internacional. Reviveu-se, assim, sob tutela dos Estados Unidos, o projeto de estruturação de um sistema econômico mundial, a partir de um centro nacional dominante, ensaiado um século antes pela Inglaterra.
+		\cite[pág. 26]{Furtado2000}
+	\end{citacao}
+	
+	No sexto capítulo, \citeonline[págs.102-103]{Robinson1979} trata do livre comércio, sendo que os pontos apresentados se encontram sintetizados a seguir:
+
+	\begin{itemize}
+		\item Ensino moderno ainda baseado no caso contra tarifas protecionistas na Inglaterra, baseando-se no trabalho de Ricardo;
+			\begin{itemize}
+				\item Argumento clássico contra proteção foi que ela produz uma má alocação de recursos dentro de um país;
+			\end{itemize}
+		\item Sem protecionismo, recursos se movem da produção de mercadorias com custos realmente altos (que podem ser exportadas) para aquelas com menor custos reais, então a produtividade total é aumentada. Este argumento se aplica quando todos os recursos estão sempre empregados;
+			\begin{itemize}
+				\item Não tem força para países de Terceiro Mundo com desemprego em massa;
+				\item Exige pressupõe aumento na exportação das mercadorias mais vantajosas para aquele país;
+				\item No Terceiro Mundo existe dependência na demanda oriunda do mercado mundial, fora a questão dos fornecedores rivais;
+			\end{itemize}
+		\item O argumento é estático, mesmo quando empregado em livros-texto modernos;
+		\item O exemplo de Ricardo envolve Portugal e Inglaterra, porém, não houve vantagem para Portugal;
+			\begin{itemize}
+				\item Na realidade, Portugal perdeu sua proeminente indústria têxtil e o mercado de exportação de vinho tinha crescimento lento\footnote{Sobre tal questão, vale salientar o apontamento de \citeonline[pág. 37]{Furtado2000}, que diz: ``O ponto de partida de Prebish foi a crítica ao sistema de divisão internacional do trabalho, chamando a atenção para as implicações do caráter estático da teoria do comércio internacional fundada na idéia de vantagens comparativas, cuja validade permanecia não contestada no mundo acadêmico.''};
+			\end{itemize}
+		\item Com o desenvolvimento industrial de países como Japão e Alemanha, o argumento se mostrou pobre;
+		\item A ideia de \textit{laissez-faire} e livre comércio impulsionou a destruição da produção têxtil manual nos países do Terceiro Mundo diante do Império Britânico;
+		\item A fé na doutrina foi reduzida nos EUA com o aumento competitivo do Japão.
+	\end{itemize}
+	
+	No final do mesmo capítulo, \citeonline[pág. 117]{Robinson1979} comenta o modelo brasileiro. Segundo a autora,  havia no país uma classe de ricos acostumados a consumir produtos importados; eles eram uma porção relativamente pequena da população, mas, num país tão grande, eles foram suficientes para criar um mercado para o tipo de mercadoria que requer uma produção em larga escala; como membro mais forte, o Brasil ganhou da participação na Associação Latino-Americana de Livre Comércio; as fundações para a industrialização foram dispostas por uma indústria nacionalizada de primários e a produção massificada foi mantida em seu lugar por um regime repressivo.
+	
+	\begin{itemize}
+		\item 1960 transnacionais trouxeram modelos estadunidenses e se aliaram a negócios nacionais;
+		\item 1968-1974 houve boom na capacidade produtiva e de consumo de bens duráveis (carros e eletrodomésticos, principalmente);
+		\item 1974 queda nos ganhos com exportações fora dos países da OPEC, afetando oferta de crédito.
+	\end{itemize}
+
+	Houve também aumento no consumo de produtos de luxo (principalmente no topo da pirâmide) e aumento dos postos de trabalhos femininos (principalmente no setor de serviços).
+	
+	No oitavo capítulo, quando comenta possíveis soluções, no âmbito da agricultura, \citeonline[págs. 132-133]{Robinson1979} considera aumentar a produção de alimentos essenciais no Terceiro Mundo algo básico, objetivando reduzir a dependência de importados (causando dependência geopolítica). Cita que a união dos países seria de grande utilidade. \citeonline[pág. 135]{Robinson1979} também cita a necessidade de eletrificação, controle do tamanho do vilarejo, propriedade e uso cooperativo ou coletivo da terra e meios de produção (fator de mitigação entre conflitos de classes/ricos × pobres).
+	
+	Na questão dos serviços sociais, também no oitavo capítulo, \citeonline[pág. 141]{Robinson1979} elenca como essenciais:
+	\begin{itemize}
+		\item Alimentação adequada;
+		\item Prevenção de doenças;
+		\item Educação.
+	\end{itemize}
+	
+	Ainda, é categórica ao apontar problemas de infraestrutura e saneamento, associando-os com a favelização e a falta de leitos hospitalares, outrossim, atribui à desigualdade ao consumo de mercadorias de luxo, alertando para a necessidade de mudar a mentalidade presente na sociedade e na indústria.
+	
+	\chapter{Comentário}
+	
+	Trata-se de uma obra bastante versátil, que funciona como uma espécie de introdução compacta ao desenvolvimento econômico, com olhar pessimista e crítico aos postulados neoclássicos. O capítulo 2 é indispensável e fornece as bases para entender a terminologia econômica com a qual Robinson trabalhará ao longo de sua obra.
+	
+	Nos demais capítulos, principalmente do terceiro ao sétimo, a autora dialoga diretamente com a doutrina neoclássica, rebatendo e contra-argumentando, sempre com exemplos, que por vezes acabam dando um tom eurocentrista, em que o Terceiro Mundo é praticamente sinônimo de parte da Ásia, ficando a América Latina em segundo plano. O comportamento que menciono pode ser observado quando \citeonline[pág. 41]{Robinson1979} explica que a economia capitalista é introduzida no chamado Terceiro Mundo a partir da troca em busca de mercadorias exóticas, indo para a organização da produção de algumas delas \textit{in loco}, no entanto, os exemplos inicialmente dão a entender que a autora está tratando apenas da Ásia e esquecendo a América Latina. Basicamente, \citeonline[pág. 41]{Robinson1979} discorre sobre a economia agrícola baseada no sistema \textit{plantation}; salienta que o sistema \textit{plantation} e as minas são uma espécie de legado deixado para as nações pós-coloniais, o que não significa que a extração do excedente será fácil para utilização na nova realidade pós-colonial. A agricultura estava associada à mineração, comenta \citeonline[pág. 42]{Robinson1979}, que brevemente se volta para a América Latina, retomando em seguida, um tom mais eurocentrista, citando que posteriormente surgiu uma economia de exportação por donos de terra locais e capitalistas, visando fornecer açúcar, café, trigo, frutas e outros produtos.
+	
+	Como era de se esperar. tratando-se de uma obra ligada aos conceitos keynesianos, a questão da distribuição de renda pode ser observada em diversos pontos e, que se torna justificada, como veremos com base na citação a seguir:
+	
+	\begin{citacao}
+		For Robinson, the notion of stability inherent in equilibrium analysis was inappropriate for a discipline like economics which deals with growing and changing economies. She also stressed that the real world was not like the world of perfect competition portrayed in economic textbooks. Rather, according to Robinson (1933), most industries comprised large firms wielding extensive market power. This	dovetailed with Kalecki’s analysis of pricing and income distribution.
+		\cite[pág. 3]{Holt2001}
+	\end{citacao}
+	
+	Como vemos, Robinson estava ciente do poder as grandes corporações, compreendendo que a noção de estabilidade dos neoclássicos não era adequada devido ao próprio dinamismo da economia.
+	
+	No oitavo capítulo, é interessante que \citeonline[págs. 137-138]{Robinson1979} se volta para a questão colonial em termos socioculturais, apontando que o oprimido insiste em imitar o comportamento do opressor, usando a posse de automóveis como exemplo, argumentando que tal comportamento reforça a desigualdade no consumo. Concorda com uma proposta padrão de vida mais simples (consistente com a pobreza generalizada, em escala nacional), com foco em serviços públicos (maior concentração e distribuição com equidade), com serviços públicos (transporte, hospitais, educação e até mesmo casas comunais), crendo que algo assim pode romper com discursos que dão prestígio à propriedade privada. Sugere uma economia da bicicleta ao invés de uma do automóvel, algo bastante atual, embora o livro seja de 1979.
+	
+	\begin{citacao}
+		A `frontal attack on massa poverty' would require ``the countries of the Third World to redefine for themselves the living standards or life-styles that they can afford on a nation-wide scale and which are consistent with their present state of overall poverty. It is inevitable that this would mean not only a much simpler standard of living, but a much greater concentration on public services which can be distributed more equitably — public buses, public hospitals, public education, even communal housing. If the developing countries really undertake such sweeping change in their development strategies, the prestigious symbols of private ownership may also change — the familiar example being a bicycle economy instead of an automobile economy''.
+		\apud[pág. 138]{Robinson1979}{Mahbub1973}
+	\end{citacao}
+	
+	Não menos interessantemente, destaco que, para a Região Metropolitana de São Paulo, previa-se já em 1986, a existência de uma demanda reprimida na ordem de 3 milhões de veículos, conforme podemos observar na citação a seguir:
+	
+	\begin{citacao}
+		A presente proposta refere-se à viabilidade de implantação de um programa metropolitano de apoio à circulação de veículos de duas rodas na Grande São Paulo. O programa envolve básicamente o gerenciamento de um projeto de inter-relacionamento, entre o poder público e iniciativa privada, no sentido de dotar alguns locais da Região Metropolitana de equipamentos que possibilitem a circulação de veículos de duas rodas, enquanto modo de transportes, uma vez que a demanda reprimida e de uso é da ordem de 3.000.000 de veículos.
+		\cite[pág. 4]{Prociclo1986}
+	\end{citacao}
+	
+	Como comentado no resumo, ao explicitar a existência da dependência dos países considerados desenvolvidos, \citeonline[pág. 17]{Robinson1979} nos permite estabelecer uma relação com o estruturalismo e os trabalhos de Raúl Prebisch (conforme fiz em nota de rodapé anterior, no capítulo do resumo) e Celso Furtado. Especialmente com relação a Furtado e, tomando por base a contribuição geral da obra em se contrapor ao pensamento neoclássico, vale citar o seguinte:
+	
+	\begin{citacao}
+		Por que este e não aquele país passou a linha demarcatória e entrou para o clube dos países desenvolvidos nessa segunda fase crucial da evolução do capitalismo industrial, que se situa entre os anos 70 do século passado e o primeiro conflito mundial, é problema cuja resposta pertence mais à História do que à análise econômica. em nenhuma parte essa passagem ocorreu no quadro do \textit{laissez-faire}: foi sempre o resultado de uma política deliberadamente concebida com esse fim.
+		\cite[pág. 20]{Furtado1974}
+	\end{citacao}
+
+	Finalmente, saliento que o livro dialoga bem com o curso, sobretudo com a primeira parte, algo que já era de se esperar em vista do título da obra. Tanto dialoga bem, que por vezes optei por introduzir notas de rodapé e blocos de citações diretamente no resumo, de forma a facilitar as relações entre a obra de Joan Robinson por mim resenhada e outras ligadas ao curso.
+	
+	% ----------------------------------------------------------
+	% ----------------------------------------------------------
+	\postextual
+	
+	
+	
+	% informa o arquivo com a bibliografia. Deve ser o mesmo nome
+	% (sem o sufixo) que será informado no ambiente filecontents
+	% que está no final deste arquivo. Neste exemplo foi usado 
+	% bibitemp.bib e bibtemp. Este comando insere a bibliografia
+	% nesta posição (antes dos apêndices, anexos, índice remissivo)
+	\bibliography{joan_robinson}
+	% ----------------------------------------------------------
+	% Glossário
+	% ----------------------------------------------------------
+	% Consultar manual da classe abntex2 para orientações sobre o
+	% uso do glossário.
+	%\renewcommand{\glossaryname}{Glossário}
+	%%\renewcommand{\glossarypreamble}{Esta é a descrição do glossário.\\ \\}
+	%\renewcommand*{\glsseeformat}[3][\seename]{\textit{#1}
+	%\glsseelist{#2}}
+
+	% ---
+	% Traduções para o ambiente glossaries
+	% ---
+	\providetranslation{Glossary}{Glossário}
+	\providetranslation{Acronyms}{Siglas}
+	\providetranslation{Notation (glossaries)}{Notação}
+	\providetranslation{Description (glossaries)}{Descrição}
+	\providetranslation{Symbol (glossaries)}{Símbolo}
+	\providetranslation{Page List (glossaries)}{Lista de Páginas}
+	\providetranslation{Symbols (glossaries)}{Símbolos}
+	\providetranslation{Numbers (glossaries)}{Números} 
+	% ---
+	
+	% ---
+	% Imprime o glossário
+	% ---
+	%\cleardoublepage
+	%\phantomsection
+	%\addcontentsline{toc}{chapter}{\glossaryname}
+	%% \glossarystyle{index}
+	%% \glossarystyle{altlisthypergroup}
+	%\glossarystyle{tree}
+	%\printglossaries
+	% ---
+	
+	% ----------------------------------------------------------
+	% Apêndices
+	% ----------------------------------------------------------
+	
+	% ---
+	% Inicia os apêndices. Não esquecer de fechar ao final de
+	% todos os apêndices (\end{apendicesenv})
+	% ---
+	%\begin{apendicesenv}
+	
+	% Imprime uma página indicando o início dos apêndices
+	%\partapendices
+	
+	% ----------------------------------------------------------
+	%\chapter{Primeiro apêndice}
+	% ----------------------------------------------------------
+	
+	%Este é um exemplo de inclusão de capítulos de %apêndice em uma 
+	%monografia.  Cada apêndice é tratado como se fosse %um capítulo.
+	%Os apêndices devem ser iniciados pelo comando de %ambiente
+	%\textbackslash begin\{apendicesenv\} e encerrados %pelo comando 
+	%\textbackslash end\{apendicesenv\}.
+	
+	% ----------------------------------------------------------
+	%\chapter{Segundo apêndice}
+	% ----------------------------------------------------------
+	
+	%Este é um exemplo de inclusão de um segundo apêndice. 
+	
+	%\end{apendicesenv}
+	% ---
+	
+	
+	% ----------------------------------------------------------
+	% Anexos
+	% ----------------------------------------------------------
+	
+	% ---
+	% Inicia os anexos
+	% ---
+	%\begin{anexosenv}
+	
+	% Imprime uma página indicando o início dos anexos
+	%\partanexos
+	
+	% ---
+	%\chapter{Primeiro anexo}
+	% ---
+	%Os anexos são similares aos apêndices se distinguindo pelo fato
+	%que os apêndices são de autoria do autor da monografia e os 
+	%anexos não são da autoria do autor da monografia.  Por exemplo,
+	%se incluir no trabalho um modelo de um formulário preenchido
+	%por alunos participantes de uma pesquisa, este será um apêndice
+	%se o formulário foi criado pelo autor da monografia e será um
+	%anexo se o formulário tiver sido criado por outros (por exemplo,
+	%é um formulário padrão da escola em que o aluno que o preenche
+	%estuda).
+	%
+	%Mesmo que o formulário tenha sido elaborado pela escola, uma
+	%reprodução do formulário preenchido por cada aluno na pesquisa
+	%será incluído no apêndice pois envolve o trabalho do autor da
+	%monografia ao distribuir, coletar e reproduzir as respostas.
+	%
+	%Este é um exemplo de inclusão de capítulos de anexos em uma 
+	%monografia.  Cada anexo é tratado como se fosse um capítulo.
+	%Os anexos devem ser iniciados pelo comando de ambiente
+	%\textbackslash begin\{anexoenv\} e encerrados pelo comando 
+	%\textbackslash end\{anexoenv\}.
+	%
+	%\end{anexosenv}
+	% ---
+	%---------------------------------------------------------------------
+	%---------------------------------------------------------------------
+	
+	%\printindex
+	
+	% Por padrão são incluídas no trabalho somente as referências
+	% citadas ao longo do texto. No comando abaixo foram acrescentadas
+	% algumas referências não citadas (neste texto servem apenas como
+	% exemplos). Não deve ser usado o comando (mais simples) 
+	% \nocite{*}, pois este parece não ser compatível com o
+	% abntex2cite
+	%\nocite{abntex2cite,abntex2wiki,boyer,eves,iezzi,kletenic,
+	%        diomara,steinbruch,intusolatex,feynman,shannon,
+	%        luisfelipe,turing}
+\end{document}
