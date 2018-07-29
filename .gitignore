@@ -1,0 +1,10 @@
+*.tex\#
+*.aux
+*.bbl
+*.bib.bak
+*.blg
+*.brf
+*.idx
+*.log
+*.synctex.gz
+*.tex.recover.bak~
